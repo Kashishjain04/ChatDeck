@@ -20,6 +20,10 @@ const Posts = () => {
         );
       });
     // eslint-disable-next-line
+
+    return () => {
+      setPosts([]);
+    };
   }, [user]);
   return (
     <div>

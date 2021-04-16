@@ -1,6 +1,9 @@
 {
   "short_name": "ChatDeck",
   "name": "ChatDeck",
+  "lang": "en-US",
+  "description": "Social media website",
+  "categories": ["social", "connections"],
   "icons": [
   {
     "src": "images/manifest-icon-192.png",
@@ -13,6 +16,23 @@
     "sizes": "512x512",
     "type": "image/png",
     "purpose": "maskable any"
+  }
+],
+"screenshots" : [
+  {
+    "src": "screenshots/ss-1.png",
+    "sizes": "1080x1920",
+    "type": "image/png"
+  },
+  {
+    "src": "screenshots/ss-2.png",
+    "sizes": "1080x1920",
+    "type": "image/png"
+  },
+  {
+    "src": "screenshots/ss-3.png",
+    "sizes": "1080x1920",
+    "type": "image/png"
   }
 ],
   "start_url": ".",
