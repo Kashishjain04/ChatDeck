@@ -20,22 +20,22 @@
 ],
 "screenshots" : [
   {
-    "src": "screenshots/ss-1.png",
+    "src": "screenshots/ss1.png",
     "sizes": "1080x1920",
     "type": "image/png"
   },
   {
-    "src": "screenshots/ss-2.png",
+    "src": "screenshots/ss2.png",
     "sizes": "1080x1920",
     "type": "image/png"
   },
   {
-    "src": "screenshots/ss-3.png",
+    "src": "screenshots/ss3.png",
     "sizes": "1080x1920",
     "type": "image/png"
   }
 ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"

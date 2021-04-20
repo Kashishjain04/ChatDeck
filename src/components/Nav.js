@@ -6,14 +6,17 @@ import { selectUser } from "../redux/userSlice";
 const Nav = () => {
   const user = useSelector(selectUser);
   return (
-    <div className="bg-white sticky top-0 h-14 py-2 px-4 border-b-2">
+    <div className="bg-white sticky top-0 h-14 py-2 px-4 border-b-2 z-10">
       <div className="sm:max-w-2xl mx-auto flex items-center justify-between overflow-hidden">
         <div>
           <Link to="/" className="brand">
             ChatDeck
           </Link>
         </div>
-        <div>
+        <div className="flex items-center space-x-3">
+          <Link to="/chat">
+            <i className="bx bx-comment text-2xl w-9 h-9 rounded-full text-center p-1 hover:bg-gray-200" />
+          </Link>
           <div className="bg-black p-0.5 w-9 h-9 rounded-full">
             <div className="bg-white p-0.5 rounded-full">
               <Link to="/profile">

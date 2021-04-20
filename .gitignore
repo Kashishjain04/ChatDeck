@@ -24,5 +24,6 @@ yarn-error.log*
 
 # firebase
 firebase.js
+firebase-messaging-sw.js
 .eslintcache
 *.cache

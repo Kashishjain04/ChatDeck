@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import firebase from "../firebase";
 import { selectUser } from "../redux/userSlice";
 
@@ -42,11 +43,19 @@ const PostCard = ({ post, id }) => {
   return (
     <div className="bg-white my-2 sm:border sm:border-gray-300 rounded-md">
       <div className="flex items-center px-4 py-2">
-        <img
-          src={post.user?.photoURL}
-          alt="user-profile"
-          className="w-12 h-12 rounded-full mr-4"
-        />
+        <Link
+          to={
+            post.user?.email === user?.email
+              ? "profile"
+              : `user/${post.user?.email}`
+          }
+        >
+          <img
+            src={post.user?.photoURL}
+            alt="user-profile"
+            className="w-12 h-12 rounded-full mr-4"
+          />
+        </Link>
         <p className="text-lg font-semibold">{post.user?.name}</p>
       </div>
       {post.image ? (

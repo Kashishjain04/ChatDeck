@@ -1,14 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import firebase from "../firebase";
 
-const auth = firebase.auth;
+const db = firebase.firestore;
 
-const ProfileHeader = ({ user }) => {
-  const logoutHandler = () => {
-    auth()
-      .signOut()
-      .catch((err) => console.log(err));
-  };
+const UserHeader = ({ user, currentUser, followHandler, unfollowHandler }) => {
+  const [isFollowing, setFollowing] = useState(null);
+
+  useEffect(() => {
+    db()
+      .doc(`users/${currentUser?.email}`)
+      .onSnapshot((snap) => {
+        if (snap.exists) {
+          setFollowing(snap.data()?.following?.includes(user?.email));
+        }
+      });
+    setFollowing(false);
+
+    return () => {
+      setFollowing(null);
+    };
+  }, [user, currentUser]);
 
   return (
     <div className="flex px-4">
@@ -39,15 +50,24 @@ const ProfileHeader = ({ user }) => {
             <p>following</p>
           </div>
         </div>
-        <button
-          onClick={logoutHandler}
-          className="py-1 px-3 w-max border border-black bg-gray-400 focus:outline-none"
-        >
-          Logout
-        </button>
+        {isFollowing ? (
+          <button
+            onClick={unfollowHandler}
+            className="py-1 px-3 w-max border border-black bg-gray-400 focus:outline-none"
+          >
+            Unfollow
+          </button>
+        ) : (
+          <button
+            onClick={followHandler}
+            className="py-1 px-3 w-max border border-black bg-gray-400 focus:outline-none"
+          >
+            Follow
+          </button>
+        )}
       </div>
     </div>
   );
 };
 
-export default ProfileHeader;
+export default UserHeader;

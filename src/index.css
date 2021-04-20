@@ -12,10 +12,27 @@
   .stories {
     @apply bg-white flex space-x-4 p-4 sm:border sm:border-gray-300 overflow-x-scroll rounded-md;
   }
-  .stories::-webkit-scrollbar {
+  .stories::-webkit-scrollbar,
+  .chat-messages::-webkit-scrollbar {
+    display: none;
+  }
+   {
     display: none;
   }
   .post-action-btn {
     @apply text-2xl cursor-pointer fill-current;
   }
+  .chat-messages {
+    max-height: calc(100vh - 13.5rem);
+    @apply flex-grow p-4 overflow-y-scroll;
+  }
+  @media (min-width: 640px) {
+    .chat-messages {
+      max-height: calc(100vh - 15.5rem);
+    }
+  }
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
 }

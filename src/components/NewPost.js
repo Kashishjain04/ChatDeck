@@ -15,6 +15,7 @@ const NewPost = () => {
     if (text === "") return;
     const obj = {
       user: {
+        email: user.email,
         name: user.name,
         photoURL: user.photoURL,
       },
