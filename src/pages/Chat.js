@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router";
 import ChatForm from "../components/ChatForm";
 import ChatMessages from "../components/ChatMessages";
 import Nav from "../components/Nav";
@@ -9,7 +10,8 @@ import { selectUser } from "../redux/userSlice";
 const db = firebase.firestore;
 
 const Chat = (props) => {
-  const userId = props.match.params.userId,
+  const history = useHistory(),
+    userId = props.match.params.userId,
     user = useSelector(selectUser),
     chatObj = user.chats[userId],
     [chatDoc, setChatDoc] = useState(null),
@@ -59,6 +61,10 @@ const Chat = (props) => {
             alt="chat"
           />
           <p className="font-semibold">{chatObj.userName}</p>
+          <i
+            onClick={() => history.goBack()}
+            className="bx bx-arrow-back ml-auto text-2xl grid place-items-center cursor-pointer w-9 h-9 rounded-full text-center p-1 hover:bg-gray-200"
+          />
         </div>
         <div className="flex flex-col flex-grow">
           <ChatMessages messages={chatDoc?.messages} />

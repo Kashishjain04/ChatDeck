@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import firebase from "../firebase";
 import { selectUser } from "../redux/userSlice";
@@ -6,12 +6,17 @@ import { selectUser } from "../redux/userSlice";
 const db = firebase.firestore;
 
 const ChatMessages = ({ messages }) => {
-  const user = useSelector(selectUser);
+  const user = useSelector(selectUser),
+    messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   return (
     <div className="chat-messages">
       {messages?.map((msg, index) => (
-        <>
+        <React.Fragment key={index}>
           {!(
             messages[index]?.timestamp?.seconds -
               messages[index - 1]?.timestamp?.seconds <=
@@ -33,8 +38,9 @@ const ChatMessages = ({ messages }) => {
           >
             <p className="break-all">{msg.message}</p>
           </div>
-        </>
+        </React.Fragment>
       ))}
+      <div ref={messagesEndRef} />
     </div>
   );
 };

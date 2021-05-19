@@ -25,8 +25,6 @@ const Chats = () => {
     };
   }, [user.email]);
 
-  console.log(chats);
-
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col">
       <Nav />

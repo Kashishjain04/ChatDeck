@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import firebase from "../firebase";
 import { selectUser } from "../redux/userSlice";
+import LoadingPostCard from "./Loading/PostCard";
 
 const db = firebase.firestore;
 
 const PostCard = ({ post, id }) => {
   const user = useSelector(selectUser),
-    [comment, setComment] = useState("");
+    [comment, setComment] = useState(""),
+    [imgLoaded, setImgLoaded] = useState(post.image === "");
 
   const likeHandler = () => {
     db()
@@ -40,7 +42,27 @@ const PostCard = ({ post, id }) => {
       .catch((err) => console.log(err));
   };
 
-  return (
+  const loadImage = (image) => {
+    return new Promise((resolve, reject) => {
+      const loadImg = new Image();
+      loadImg.src = image;
+      // wait 2 seconds to simulate loading time
+      loadImg.onload = () => {
+        resolve(image);
+        setImgLoaded(true);
+      };
+
+      loadImg.onerror = (err) => reject(err);
+    });
+  };
+
+  useEffect(() => {
+    post.image && loadImage(post.image);
+  }, [post]);
+
+  return !imgLoaded ? (
+    <LoadingPostCard />
+  ) : (
     <div className="bg-white my-2 sm:border sm:border-gray-300 rounded-md">
       <div className="flex items-center px-4 py-2">
         <Link
