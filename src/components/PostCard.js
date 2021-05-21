@@ -10,13 +10,20 @@ const db = firebase.firestore;
 const PostCard = ({ post, id }) => {
   const user = useSelector(selectUser),
     [comment, setComment] = useState(""),
-    [imgLoaded, setImgLoaded] = useState(post.image === "");
+    [imgLoaded, setImgLoaded] = useState(post.image === ""),
+    [likeAnimate, setLikeAnimate] = useState(false);
 
   const likeHandler = () => {
     db()
       .doc(`posts/${id}`)
       .update({
         likes: db.FieldValue.arrayUnion(user.email),
+      })
+      .then(() => {
+        setLikeAnimate(true);
+        setTimeout(() => {
+          setLikeAnimate(false);
+        }, 1000);
       });
   };
   const unlikeHandler = () => {
@@ -58,12 +65,16 @@ const PostCard = ({ post, id }) => {
 
   useEffect(() => {
     post.image && loadImage(post.image);
+    return () => {
+      setLikeAnimate(false);
+    };
   }, [post]);
 
   return !imgLoaded ? (
     <LoadingPostCard />
   ) : (
-    <div className="bg-white my-2 sm:border sm:border-gray-300 rounded-md">
+    <div className="bg-white my-2 sm:border sm:border-gray-300 rounded-md relative">
+      {/* header */}
       <div className="flex items-center px-4 py-2">
         <Link
           to={
@@ -80,21 +91,28 @@ const PostCard = ({ post, id }) => {
         </Link>
         <p className="text-lg font-semibold">{post.user?.name}</p>
       </div>
-      {post.image ? (
-        <img
-          onDoubleClick={likeHandler}
-          src={post.image}
-          alt="post"
-          className="w-full border-t border-b cursor-pointer"
-        />
-      ) : (
-        <p
-          onDoubleClick={likeHandler}
-          className="p-4 border-t border-b cursor-pointer"
-        >
-          {post.text}
-        </p>
-      )}
+      {/* main content */}
+      <div className="border-t border-b cursot-pointer relative">
+        {/* heart */}
+        {likeAnimate && (
+          <div className="heart-container absolute top-0 left-0 z-10 w-full h-full grid place-items-center">
+            <i className="bx bxs-heart text-white text-9xl instagram-heart" />
+          </div>
+        )}
+        {post.image ? (
+          <img
+            onDoubleClick={likeHandler}
+            src={post.image}
+            alt="post"
+            className="w-full"
+          />
+        ) : (
+          <p onDoubleClick={likeHandler} className="p-4">
+            {post.text}
+          </p>
+        )}
+      </div>
+      {/* like btn */}
       <div className="flex space-x-4 px-4 mt-1">
         {post.likes.includes(user.email) ? (
           <i
@@ -107,18 +125,21 @@ const PostCard = ({ post, id }) => {
             onClick={likeHandler}
           />
         )}
+        {/* other action btns */}
         <i className="bx bx-comment post-action-btn" />
         <i className="bx bx-share post-action-btn" />
       </div>
       <p className="px-4 mb-2 font-semibold text-sm">
         {post.likes?.length} likes
       </p>
+      {/* if image post: caption */}
       {post.image && (
         <p className="px-4 mb-2 -mt-2 line-clamp-1">
           <span className="font-semibold">{post.user.name}: </span>
           <span className="break-all">{post.text}</span>
         </p>
       )}
+      {/* comments */}
       {post.comments?.length !== 0 && (
         <p className="px-4 -mt-2 mb-2 text-sm text-gray-500">Comments</p>
       )}
@@ -128,6 +149,7 @@ const PostCard = ({ post, id }) => {
           <span className="break-all">{comment.comment}</span>
         </p>
       ))}
+      {/* add comment */}
       <form className="border-t flex" onSubmit={commentHandler}>
         <input
           type="text"
