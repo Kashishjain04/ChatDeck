@@ -23,7 +23,7 @@ const PostCard = ({ post, id }) => {
         setLikeAnimate(true);
         setTimeout(() => {
           setLikeAnimate(false);
-        }, 1000);
+        }, 1100);
       });
   };
   const unlikeHandler = () => {
@@ -96,7 +96,7 @@ const PostCard = ({ post, id }) => {
         {/* heart */}
         {likeAnimate && (
           <div className="heart-container absolute top-0 left-0 z-10 w-full h-full grid place-items-center">
-            <i className="bx bxs-heart text-white text-9xl instagram-heart" />
+            <i className="bx bxs-heart text-red-400 text-9xl instagram-heart" />
           </div>
         )}
         {post.image ? (
