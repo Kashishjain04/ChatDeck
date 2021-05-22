@@ -37,6 +37,10 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+.profilePic:hover .profilePicOverlay {
+  visibility: visible !important;
+}
+
 .instagram-heart {
   animation-duration: 1000ms;
   animation-name: like-heart-animation;

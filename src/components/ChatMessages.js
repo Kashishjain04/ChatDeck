@@ -31,13 +31,23 @@ const ChatMessages = ({ messages }) => {
               ).toLocaleString()}
             </p>
           )}
-          <div
-            className={`w-max max-w-xs my-2 rounded-3xl p-2 px-4  ${
-              msg.by.email === user.email ? "ml-auto bg-gray-300" : "border"
-            }`}
-          >
-            <p className="break-all">{msg.message}</p>
-          </div>
+          {msg.image ? (
+            <div
+              className={`w-max max-w-xs my-2 rounded-xl p-3  ${
+                msg.by.email === user.email ? "ml-auto bg-gray-300" : "border"
+              }`}
+            >
+              <img src={msg.image} alt="msg" />
+            </div>
+          ) : (
+            <div
+              className={`w-max max-w-xs my-2 rounded-3xl py-2 px-4  ${
+                msg.by.email === user.email ? "ml-auto bg-gray-300" : "border"
+              }`}
+            >
+              <p className="break-all">{msg.message}</p>
+            </div>
+          )}
         </React.Fragment>
       ))}
       <div ref={messagesEndRef} />

@@ -9,7 +9,8 @@ const db = firebase.firestore,
 const NewPost = () => {
   const user = useSelector(selectUser),
     [image, setImage] = useState(null),
-    [text, setText] = useState("");
+    [text, setText] = useState(""),
+    [displayURL, setDisplayURL] = useState("");
 
   const addPost = (url) => {
     if (text === "") return;
@@ -101,13 +102,32 @@ const NewPost = () => {
           accept="image/*"
           style={{ fontSize: 0 }}
           className="absolute w-20 h-8 opacity-0 cursor-pointer"
-          onChange={(e) => setImage(e.target.files[0])}
+          onChange={(e) => {
+            setImage(e.target.files[0]);
+            setDisplayURL(
+              e?.target?.files?.[0]
+                ? URL.createObjectURL(e?.target?.files?.[0])
+                : ""
+            );
+          }}
         />
         <button className="flex space-x-1 items-center text-xl text-gray-500">
           <i className="bx bx-photo-album text-2xl"></i>
           <p>Photo</p>
         </button>
       </div>
+      {displayURL !== "" && (
+        <div className="w-11/12 mx-auto relative">
+          <i
+            onClick={() => {
+              setImage(null);
+              setDisplayURL("");
+            }}
+            className="bx bx-x w-9 h-9 absolute top-0 right-0 text-center text-3xl bg-white bg-opacity-50 rounded-full cursor-pointer"
+          />
+          <img src={displayURL} alt="preview" className="w-full" />
+        </div>
+      )}
     </form>
   );
 };

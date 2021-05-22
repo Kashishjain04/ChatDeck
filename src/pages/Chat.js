@@ -14,8 +14,7 @@ const Chat = (props) => {
     userId = props.match.params.userId,
     user = useSelector(selectUser),
     chatObj = user.chats[userId],
-    [chatDoc, setChatDoc] = useState(null),
-    [msg, setMsg] = useState("");
+    [chatDoc, setChatDoc] = useState(null);
 
   useEffect(() => {
     db()
@@ -29,26 +28,6 @@ const Chat = (props) => {
       setChatDoc(null);
     };
   }, [chatObj]);
-
-  const sendMessage = (e) => {
-    e.preventDefault();
-    if (msg === "") return;
-    setMsg("");
-    db()
-      .doc(`chats/${chatObj.chatId}`)
-      .update({
-        messages: db.FieldValue.arrayUnion({
-          message: msg,
-          timestamp: db.Timestamp.now(),
-          by: {
-            email: user.email,
-            name: user.name,
-            photoURL: user.photoURL,
-          },
-        }),
-      })
-      .catch((err) => console.log(err));
-  };
 
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col">
@@ -68,7 +47,7 @@ const Chat = (props) => {
         </div>
         <div className="flex flex-col flex-grow">
           <ChatMessages messages={chatDoc?.messages} />
-          <ChatForm sendMessage={sendMessage} msg={msg} setMsg={setMsg} />
+          <ChatForm chatId={chatObj.chatId} user={user} />
         </div>
       </div>
     </div>
