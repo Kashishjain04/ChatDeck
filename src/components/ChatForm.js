@@ -20,7 +20,7 @@ const ChatForm = ({ chatId, user }) => {
     if (image) {
       setImageUploading(true);
       const storageRef = storage().ref(
-        `messages/${user.email}/${new Date().toLocaleString()}-${image.name}`
+        `messages/${user.email}/${new Date().toDateString()}-${image.name}`
       );
       const task = storageRef.put(image);
       task.on(

@@ -10,7 +10,8 @@ const NewPost = () => {
   const user = useSelector(selectUser),
     [image, setImage] = useState(null),
     [text, setText] = useState(""),
-    [displayURL, setDisplayURL] = useState("");
+    [displayURL, setDisplayURL] = useState(""),
+    [imageUploading, setImageUploading] = useState(false);
 
   const addPost = (url) => {
     if (text === "") return;
@@ -26,6 +27,9 @@ const NewPost = () => {
       comments: [],
       timestamp: new Date(),
     };
+    setText("");
+    setImage(null);
+    setDisplayURL("");
     db()
       .collection("posts")
       .add(obj)
@@ -37,8 +41,9 @@ const NewPost = () => {
             posts: db.FieldValue.arrayUnion(docRef.id),
           })
           .then(() => {
-            setText("");
-            setImage(null);
+            // setText("");
+            // setImage(null);
+            // setDisplayURL("");
           })
           .catch((err) => console.log(err));
       })
@@ -47,27 +52,29 @@ const NewPost = () => {
 
   const submitHandler = async () => {
     if (image) {
+      setImageUploading(true);
       const storageRef = storage().ref(
-        `posts/${user.email}/${new Date().toLocaleString()}-${image.name}`
+        `posts/${user.email}/${new Date().toDateString()}-${image.name}`
       );
       const task = storageRef.put(image);
       task.on(
         "state_changed",
-        function progress(snapshot) {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log(progress);
-        },
+        function progress(snapshot) {},
         function error(err) {
           console.log(err);
+          setImageUploading(false);
         },
         function complete() {
           storageRef
             .getDownloadURL()
             .then((url) => {
+              setImageUploading(false);
               addPost(url);
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+              setImageUploading(false);
+              console.log(err);
+            });
         }
       );
     } else {
@@ -125,6 +132,14 @@ const NewPost = () => {
             }}
             className="bx bx-x w-9 h-9 absolute top-0 right-0 text-center text-3xl bg-white bg-opacity-50 rounded-full cursor-pointer"
           />
+          {imageUploading && (
+            <div className="z-10 absolute w-full h-full grid place-items-center bg-gray-400 bg-opacity-50">
+              <div
+                style={{ borderTopColor: "#4f99a2" }}
+                className="animate-spin rounded-full border-8 h-24 w-24 sm:h-32 sm:w-32"
+              />
+            </div>
+          )}
           <img src={displayURL} alt="preview" className="w-full" />
         </div>
       )}
