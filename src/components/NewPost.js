@@ -50,7 +50,8 @@ const NewPost = () => {
       .catch((err) => console.log(err));
   };
 
-  const submitHandler = async () => {
+  const submitHandler = async (e) => {
+    e.preventDefault();
     if (image) {
       setImageUploading(true);
       const storageRef = storage().ref(
@@ -83,7 +84,10 @@ const NewPost = () => {
   };
 
   return (
-    <form className="bg-white my-4 p-4 sm:border sm:border-gray-300 rounded-md">
+    <form
+      onSubmit={submitHandler}
+      className="bg-white my-4 p-4 sm:border sm:border-gray-300 rounded-md"
+    >
       <div className="flex items-center">
         <img
           className="w-12 h-12 rounded-full mr-4"
