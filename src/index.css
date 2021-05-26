@@ -31,6 +31,13 @@
       max-height: calc(100vh - 15.5rem);
     }
   }
+  .search-input {
+    @apply flex-grow bg-gray-100 border rounded-sm px-2 py-1;
+  }
+  .search-input:focus {
+    outline: none;
+    /* text-align: left !important; */
+  }
 }
 
 * {
