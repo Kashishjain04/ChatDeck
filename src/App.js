@@ -19,6 +19,10 @@ function App() {
     user = useSelector(selectUser),
     [loading, setLoading] = useState(true);
 
+  // useEffect(() => {
+  // auth().signInWithEmailAndPassword("test@1.com", "123456");
+  // }, []);
+
   useEffect(() => {
     auth().onAuthStateChanged((user) => {
       if (user) {
