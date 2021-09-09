@@ -65,7 +65,10 @@ const Nav = () => {
       <div className="sm:max-w-2xl mx-auto flex items-center justify-between">
         <div>
           <Link to="/" className="brand">
-            ChatDeck
+            <p className="hidden sm:block ">ChatDeck</p>
+            <div className="block sm:hidden absolute h-11 w-11 transform -translate-y-1/2">
+              <img src="/images/logo.png" alt="logo" />
+            </div>
           </Link>
         </div>
         <OutsideAlerter onClickAway={() => setSearchShow(false)}>
